@@ -189,7 +189,9 @@ function buildRouteRate (pluginComponent, params, routeOptions) {
         if (typeof params.max === 'number') {
           return params.max
         } else {
-          return params.max(req, key)
+          (async () => {
+            return await params.max(req, key)
+          })
         }
       }
     }
