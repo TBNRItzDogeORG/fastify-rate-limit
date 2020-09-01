@@ -15,7 +15,11 @@ const serializeError = FJS({
     message: { type: 'string' }
   }
 })
-
+const getPromise = async (s) => {    
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(s), 500);
+  });
+}
 function rateLimitPlugin (fastify, settings, next) {
   // create the object that will hold the "main" settings that can be shared during the build
   // 'global' will define, if the rate limit should be apply by default on all route. default : true
@@ -189,9 +193,15 @@ function buildRouteRate (pluginComponent, params, routeOptions) {
         if (typeof params.max === 'number') {
           return params.max
         } else {
-          return params.max(req, key).then(r => {
-            return r;
-          });
+          return (async () => {
+            getPromise(params.max(req, key))
+            .then(result => {
+            return result
+            })
+            .catch(err => {
+            console.log(err);
+            });
+          })
         }
       }
     }
