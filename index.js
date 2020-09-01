@@ -191,7 +191,7 @@ function buildRouteRate (pluginComponent, params, routeOptions) {
         } else {
           (async () => {
             return await params.max(req, key)
-          })
+          })()
         }
       }
     }
