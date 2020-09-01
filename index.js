@@ -150,7 +150,6 @@ function buildRouteRate (pluginComponent, params, routeOptions) {
       }
 
       const maximum = getMax()
-      console.log(maximum)
       if (current <= maximum) {
         res.header('x-ratelimit-limit', maximum)
           .header('x-ratelimit-remaining', maximum - current)
@@ -195,14 +194,9 @@ function buildRouteRate (pluginComponent, params, routeOptions) {
           return params.max
         } else {
           return (async () => {
-            getPromise(params.max(req, key))
-            .then(result => {
-            return result
-            })
-            .catch(err => {
-            console.log(err);
-            });
-          })
+            const result = await params.max(req, key)
+            return result;
+          })()
         }
       }
     }
